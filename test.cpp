@@ -2,7 +2,6 @@
 using namespace std;
 typedef long long LL;
 typedef unsigned long long ULL;
-#define QHK 1
 
 void work() {
     
