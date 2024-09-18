@@ -12,7 +12,7 @@ int main()
     freopen("qi.in","r",stdin);
     freopen("qi.out","w",stdout);
     #endif
-    // ios::sync_with_stdio(false); cin.tie(0); 
+    ios::sync_with_stdio(false); cin.tie(0); 
     int T=1;
     // scanf("%d",&T);
     // cin >> T;
