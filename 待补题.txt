@@ -1,3 +1,3 @@
 cf972D  https://codeforces.com/contest/2005/problem/D
 2024 icpc online 2 : C E
-ABC372FG  https://atcoder.jp/contests/abc372/tasks/abc372_g
+ABC372G  https://atcoder.jp/contests/abc372/tasks/abc372_g
