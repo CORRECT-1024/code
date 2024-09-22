@@ -5,15 +5,15 @@ typedef unsigned long long ULL;
 
 int n, c;
 
-array<int, 2> dfs(int x, vector<vector<int> > &bian, vector<int> &bo, vector<LL> &a) {
+array<LL, 2> dfs(int x, vector<vector<int> > &bian, vector<int> &bo, vector<LL> &a) {
     bo[x] = 1;
-    array<int, 2> ans = {0, 0};
+    array<LL, 2> ans = {0, 0};
     ans[0] = 0;  ans[1] = a[x];
     for (int i=0; i<bian[x].size(); i++) {
         if (bo[bian[x][i]] )  continue;
         auto p = dfs(bian[x][i], bian, bo, a);
-        ans[0] += max(p[0], p[1] - c);
-        ans[1] += max(p[0] - c, p[1] - 2 * c);
+        ans[0] += max(p[0], p[1]);
+        ans[1] += max(p[0], p[1] - 2 * c);
     }
     //0：x不-c的ans， 1：x-c的ans， 2：lin【x】-c在x(bu-c)这里的ans 3: lin[x] - c && x - c -> ans[x]
     // if (x != 1 && bian[x].size() == 1) {
@@ -51,7 +51,7 @@ void work() {
     //     ans += max((LL)0, a[i] - du[i] * c);
     // }
     vector<int> bo(n+10, 0);
-    array<int, 2> fans = dfs(1, bian, bo, a);
+    array<LL, 2> fans = dfs(1, bian, bo, a);
     ans = max(fans[0], fans[1]);
     // ans = max({fans[0], fans[1], fans[2], fans[3]});
     cout << ans << '\n';
