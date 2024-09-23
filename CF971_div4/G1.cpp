@@ -1,6 +1,8 @@
 //不会set导致的。。。
 //用set，每次删除两个，加两个，O(nlog)
 //明天在写
+//丸辣，老眼昏花，看错题啦
+//奥，没看错
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
