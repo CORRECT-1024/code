@@ -5,7 +5,16 @@ typedef unsigned long long ULL;
 
 void work() {
     srand(time(0));
-
+    int T = 1;
+    cout << T << '\n';
+    int n = rand() % 100 + 3;
+    cout << n << '\n';
+    cout << 1 << ' '  << 2 << '\n';
+    for (int i=3; i<=n; i++) {
+        cout << i << ' ' << rand() % (i - 2) + 1 << '\n';
+    }
+    int u = rand() % (n - 1) + 2;
+    cout << u << ' ' << u << '\n';
 }
 int main()
 {

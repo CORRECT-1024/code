@@ -3,17 +3,26 @@ using namespace std;
 typedef long long LL;
 typedef unsigned long long ULL;
 
+bool cmp(array<int, 2> x, array<int, 2> y) {
+    return min(x[0], x[1]) < min(y[0], y[1]);
+}
 void work() {
     int n;
     cin >> n;
-    // vector<vector<int> > zi(n+10, vector<int> ());
+    vector<array<int, 2> > bian(n+10);
+    for (int i=1; i<n; i++) {
+        cin >> bian[i][0] >> bian[i][1];
+    }
+    sort(&bian[1], &bian[n], cmp);
+    vector<vector<int> > zi(n+10, vector<int> ());
     vector<int> fa(n+10, 0);
     fa[1] = -1;
     for (int i=1; i<n; i++) {
-        int u, v;  cin >> u >> v;
+        int u, v; 
+        u = bian[i][0];  v = bian[i][1];
         if (fa[v] != 0)  swap(u, v);
         fa[v] = u;
-        // zi[u].push_back(v);
+        zi[u].push_back(v);
     }
     vector<int> bo(n+10, 0);
     int u;  cin >> u;  cin >> u;
@@ -56,23 +65,38 @@ void work() {
         m = i;
         lenu ++;   lenv --;
     }
+    vector<int> flu(lu), flv(lv);
     for (int i=2; i<=m; i++) {
-        lu[i] = max(lu[i-1], lu[i]);
+        flu[i] = max(flu[i-1], flu[i]);
+    }
+    bool bo2 = (len[u] >= len[1]);
+    for (int i=1; i<=m && !bo2; i++) {
+        if (flu[i] >= len[1]) {
+            bo2 = true;
+        }
     }
     bool bo1 = true;
     for (int i=m; i>m / 2 && bo1; i--) {
-        if (lv[i] > lu[i - 1]) {
+        if (lv[i] > flu[i - 1]) {
             bo1 = false;
+        }
+    }
+    if (bo1 ) {
+        flu = lu;
+        for (int i=1; i<m / 2; i++) {
+            flu[i] = max(flu[i], flu[i + 1]);
+        }
+        for (int i=m / 2 + 1; i<=m; i++) {
+            flv[i+1] = max(flv[i], flv[i + 1]);
+        }
+        for (int i=1; i<m/2; i++) {
+            if (flu[i + 1] < flv[m - i]) {
+                
+            }
         }
     }
     if (!bo1 ) {
         bo1 = (len[u] >= ma);
-    }
-    bool bo2 = (len[u] >= len[1]);
-    for (int i=1; i<=m && !bo2; i++) {
-        if (lu[i] >= len[1]) {
-            bo2 = true;
-        }
     }
     if (bo1 && bo2) {
         cout << "Bob\n";
