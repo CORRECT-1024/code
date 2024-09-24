@@ -18,33 +18,51 @@ void work() {
     for (int i=1; i<=n; i++) {
         cin >> a[i];
         a[i] -= i;
+        // cout << a[i] << ' ';
     }
+    // cout << '\n';
     vector<int> ans(n+10, 0);
-    priority_queue<pair<int, int>, vector<pair<int, int> >, less<> > pri;
+    // priority_queue<pair<int, int>, vector<pair<int, int> >, less<> > pri;
+    set<array<int, 2> > st;
     map<int, int> mp, mp1;
     for (int i=1; i<k; i++) {
         mp[a[i]] ++;
     }
     for (auto&[ai, num] : mp) {
-        pri.push({num, ai});
+        // pri.push({num, ai});
+        st.insert({num, ai});
     }
     for (int i=k; i<=n; i++) {
+        if (mp[a[i]] ) st.erase({mp[a[i]], a[i]});
         mp[a[i]] ++;
-        if (i > k) mp[a[i-k]] --;
-        if (mp1[a[i]] == 0) {
-            pri.push({mp[a[i]], a[i]});
-            mp1[a[i]] = 1;
+        st.insert({mp[a[i]], a[i]});
+        if (i > k) {
+            st.erase({mp[a[i-k]], a[i-k]});
+            mp[a[i-k]] --;
+            if (mp[a[i-k]] ) st.insert({mp[a[i-k]], a[i-k]});
         }
-        while (pri.top()[0] != mp[pri.top()[1]]) {
-            auto t = pri.top();  pri.pop();
-            t[0] = mp[t[1]];
-            pri.push(t);
-        }
+        // if (mp1[a[i]] == 0) {
+        //     pri.push({mp[a[i]], a[i]});
+        //     mp1[a[i]] = 1;
+        // }
+        // while (pri.top()[0] != mp[pri.top()[1]]) {
+        //     auto t = pri.top();  pri.pop();
+        //     t[0] = mp[t[1]];
+        //     pri.push(t);
+        // }
+        // for (auto k = st.begin(); k != st.end(); k ++) {
+        //     cout << (*k)[0] << ' ';
+        // }
+        // cout << '\n';
+        auto p = st.end();  p --;
+        ans[i] = (*p)[0];
+        // if (mp1[a[i]] > pri.top()[0]) {
 
+        // }
     }
     while (q --) {
         int l, r;  cin >> l >> r;
-        cout << ans[r] << '\n';
+        cout << k - ans[r] << '\n';
     }
 }
 int main()
