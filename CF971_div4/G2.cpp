@@ -1,7 +1,8 @@
 //线段树好像能写？
 //查找一次区间答案，好像是3log？
-//好像build不好写，时间复杂度好像会爆？
+//好像build不好写，时间复杂度好像会爆？(其实爆不了)
 //题解真是天才想法，甚至bulid都不用写了
+//build还是得写，需要清空一些xds和lazy
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
