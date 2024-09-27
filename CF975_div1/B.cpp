@@ -31,7 +31,7 @@ int check(int ml, int mr, vector<vector<int> > &b) {
                 boo = true;
             }
             if (boo) {
-                t0 -= max(0, i - last - dl - dr);
+                t0 += i - last - dl - dr;
                 last = i;
             }
         }
