@@ -1,3 +1,4 @@
 cf972D  https://codeforces.com/contest/2005/problem/D
 cf971:G1 G2
 cf973F  https://codeforces.com/contest/2013/problem/F1
+2022Weihai K  https://codeforces.com/gym/104023/problem/K

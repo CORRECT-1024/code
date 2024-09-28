@@ -3,3 +3,4 @@ cf972D  https://codeforces.com/contest/2005/problem/D
 ABC372G  https://atcoder.jp/contests/abc372/tasks/abc372_g
 cf973F  https://codeforces.com/contest/2013/problem/F1
 cf971G3 https://codeforces.com/contest/2009/problem/G3
+2022Weihai K  https://codeforces.com/gym/104023/problem/K
