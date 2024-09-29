@@ -84,10 +84,10 @@ void solve() {
             }
             if (u > lst) {
                 int res = std::gcd(pa[ipa][0], std::gcd(fb[ifb][0], sufa[r])) + std::gcd(pb[ipb][0], std::gcd(fa[ifa][0], sufb[r]));
-                cout << u << ' ' << r << ' ' << res << '\n';
-                cout << pa[ipa][0] << ' ' << fb[ifb][0] << ' ' << sufa[r] << '\n';
-                cout << pb[ipb][0] << ' ' << fa[ifa][0] << ' ' << sufb[r] << '\n';
-                cout << '\n';
+                // cout << u << ' ' << r << ' ' << res << '\n';
+                // cout << pa[ipa][0] << ' ' << fb[ifb][0] << ' ' << sufa[r] << '\n';
+                // cout << pb[ipb][0] << ' ' << fa[ifa][0] << ' ' << sufb[r] << '\n';
+                // cout << '\n';
                 if (res > ans) {
                     ans = res;
                     cnt = u - lst;

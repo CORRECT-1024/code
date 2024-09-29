@@ -4,7 +4,8 @@ typedef long long LL;
 typedef unsigned long long ULL;
 
 void work() {
-    int n, ans, ansnum;
+    int n;
+    LL ans, ansnum;
     cin >> n;
     vector<int> a(n+10, 0), b(n+10, 0);
     for (int i=1; i<=n; i++) {
@@ -23,16 +24,16 @@ void work() {
     }
     for (int i=1; i<=n; i++) {
         if (suma[i] != suma[i+1]) {
-            pa.push_back({suma[i], i+1});
+            pa.push_back({suma[i], i});
             // cout << suma[i] << ' ' << i << '\n';
         }
         if (sumb[i] != sumb[i+1]) {
-            pb.push_back({sumb[i], i+1});
+            pb.push_back({sumb[i], i});
         }
     }
     // cout << '\n';
-    pa.push_back({0, n});
-    pb.push_back({0, n});
+    pa.push_back({suma[n], n});
+    pb.push_back({sumb[n], n});
     ans = suma[n] + sumb[n];
     ansnum = 0;
     //a b的后缀异或和
@@ -44,15 +45,15 @@ void work() {
     //gcd(l, r) != gcd(l+1, r)时，存{gcd(l, r), l}
     //随r一直维护
     vector<array<int, 2> > fa, fb;
-    fa.push_back({0, 1});
-    fb.push_back({0, 1});
+    fa.push_back({0, 0});
+    fb.push_back({0, 0});
     for (int r=1; r<=n; r++) {
         //维护fa, fb的过程和jls不一样，如果wa了再来研究
         //先维护fa, fb;
         int k = 0;
         for (int i=0; i<fa.size(); i++) {
             fa[i][0] = gcd(fa[i][0], a[r]);
-            int t = fa[i][0];
+            int t = fa[i][0], id = fa[i][1];
             if (k && fa[i][0] == fa[k-1][0]) {
                 //只改fa[k-1][1] (l)
                 fa[k-1][1] = fa[i][1];
@@ -77,14 +78,14 @@ void work() {
         fa.push_back({0, r});
         fb.push_back({0, r});
         //l：pa，pb，fa，fb
-        int l = 0, last = -1;
+        LL l = 0, last = -1;
         //左：suma[l]，中：fa[faid]，右：fsuma[r+1];
         int paid = 0, pbid = 0, faid = 0, fbid = 0;
         while (true) {
             l = min({pa[paid][1], pb[pbid][1], fa[faid][1], fb[fbid][1]});
             if (l >= r) break;
             if (l != last) {
-                int fans = 0;
+                LL fans = 0;
                 fans += gcd(suma[l], gcd(fb[fbid][0], fsuma[r+1]));
                 fans += gcd(sumb[l], gcd(fa[faid][0], fsumb[r+1]));
                 // cout << l << ' ' << r << ' ' << fans << '\n';
