@@ -27,8 +27,8 @@ void work() {
             pb.push_back({sumb[i], i});
         }
     }
-    ans = 0;
-    ansnum = 0;
+    ans = suma[n] + sumb[n];
+    ansnum = 1;
     //a b的后缀异或和
     vector<int> fsuma(n+10, 0), fsumb(n+10, 0);
     for (int i=n; i>=1; i--) {
