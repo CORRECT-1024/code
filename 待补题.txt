@@ -1,4 +1,5 @@
-cf972D  https://codeforces.com/contest/2005/problem/D
+cf2500以内的尽量都补掉
+
 2024 icpc online 2 : C E
 ABC372G  https://atcoder.jp/contests/abc372/tasks/abc372_g
 cf973F  https://codeforces.com/contest/2013/problem/F1
