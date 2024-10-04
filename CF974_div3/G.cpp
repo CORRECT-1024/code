@@ -1,3 +1,4 @@
+//用栈模拟一下不就好了，我之前写的什么狗屎
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
