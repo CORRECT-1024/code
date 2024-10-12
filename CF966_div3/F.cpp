@@ -6,24 +6,33 @@ typedef unsigned long long ULL;
 void work() {
     int n, k;
     cin >> n >> k;
-    
-    // int sum = 0;
-    // LL ans = 0;
-    // priority_queue<pair<int, int>, vector<pair<int, int>>, less<pair<int, int> > > pri;
-    // for (int i=1; i<=n; i++) {
-    //     int a, b;  cin >> a >> b;
-    //     if (a > b) swap(a, b);
-    //     pri.push({a, b});
-    //     sum += a + b;
-    //     ans += a * b;
-    // }
-    // sum -= k;
-    // while (sum) {
-    //     int a = pri.top().first, b = pri.top().second;
-    //     pri.pop();
-    //     if ()
-    // }
-
+    vector<array<int, 2> > a(n+10);
+    for (int i=1; i<=n; i++) {
+        cin >> a[i][0] >> a[i][1];
+        if (a[i][0] > a[i][1]) swap(a[i][0], a[i][1]);
+    }
+    vector<int> dp(k+10, 1e9);
+    dp[0] = 0;
+    for (int i=1; i<=n; i++) {
+        int x = a[i][0], y = a[i][1];
+        int sum = 0;
+        vector<int> fdp(dp);
+        for (int j=1; j<=a[i][0] + a[i][1]; j++) {
+            if (x <= y) {
+                sum += x;  y --;
+            } else {
+                sum += y;  x --;
+            }
+            for (int num = 0; num < k; num ++) {
+                int to = num + j;
+                if (to > k) to = k;
+                fdp[to] = min(fdp[to], dp[num] + sum);
+            }
+        }
+        dp = fdp;
+    }
+    if (dp[k] == 1e9)  dp[k] = -1;
+    cout << dp[k] << '\n';
 }
 int main()
 {
