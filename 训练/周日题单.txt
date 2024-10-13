@@ -2,5 +2,6 @@
 √ cf971:G1 G2 
 cf973F  https://codeforces.com/contest/2013/problem/F1
 2022Weihai K  https://codeforces.com/gym/104023/problem/K
-√ https://codeforces.com/problemset/problem/2014/H (可以当成莫队板子题练习，也能学到题解hash异或的天才想法)
+√ https://codeforces.com/problemset/problem/2014/H (可以当成莫队板子题练习，也能学到题解离散化hash异或的天才想法)
 cf977D https://codeforces.com/contest/2021/problem/D
+cf967D https://codeforces.com/contest/2020/problem/D
