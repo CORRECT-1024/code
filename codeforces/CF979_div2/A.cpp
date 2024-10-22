@@ -1,5 +1,3 @@
-//读错题了，sad
-//简单但麻烦的dp，不想写
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -8,9 +6,14 @@ typedef unsigned long long ULL;
 void work() {
     int n;
     cin >> n;
-    string s1, s2;
-    cin >> s1 >> s2;
-    
+    int mi = 1e9, ma = -1;
+    for (int i=1; i<=n; i++) {
+        int x;   cin >> x;
+        mi = min(mi, x);
+        ma = max(ma, x);
+    }
+    LL ans = (LL)(n - 1) * (ma - mi);
+    cout << ans << '\n';
 }
 int main()
 {
