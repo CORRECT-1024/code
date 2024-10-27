@@ -15,6 +15,7 @@ void work() {
         while (d <= hd && num) {
             num = (zz + fx + d - 1) / (fx + d);
             ans = min(ans, fans + num * y + x * d);
+            cout << num << ' ' << d << ' ' << fans + num * y + x * d << '\n';
             // if (fans + num * y + x * d == 160) {
             //     cout << i << ' ' << zz << ' ' << fx << ' ' << num << ' ' << d << '\n';
             // }
