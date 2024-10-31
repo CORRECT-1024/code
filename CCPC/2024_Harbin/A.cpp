@@ -53,7 +53,7 @@ void work() {
     int end = num;
     lid[0] = end;  rid[0] = end;
     vector<pair<int, int> > bian(id+10);
-    for (int i=beid - 1; i>=0; i--) {
+    for (int i=beid-1; i>=0; i--) {
         if (i < idbe && bl[i] == 0) {
             bian[lid[i+1]] = {id + beid - i, 1};
             if (i == 0) {
@@ -105,7 +105,7 @@ void work() {
         cout << '\n';
     }
     //l-r
-    for (int i=idbe-1; i>0; i--) {
+    for (int i=idbe-2; i>0; i--) {
         // cout << id + idbe - i << ' ';
         if (i == 1) {
             cout << 2 << ' ' << end << ' ' << 1 << ' ';
