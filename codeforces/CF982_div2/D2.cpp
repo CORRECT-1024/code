@@ -5,9 +5,9 @@ typedef unsigned long long ULL;
 const int mod = 1e9 + 7;
 const int mod1 = 1e9 + 9;
 
-array<LL, 2> fun(array<LL, 2> x, array<LL, 2> y) {
+array<LL, 3> fun(array<LL, 3> x, array<LL, 3> y) {
     if (x[0] == y[0]) {
-        return {x[0], (x[1] + y[1]) % mod};
+        return {x[0], (x[1] + y[1]) % mod, (x[2] + y[2]) % mod1};
     }
     // return min(x, y);
     if (x[0] < y[0])  return x;
@@ -25,33 +25,33 @@ void work() {
         sum[i] = sum[i-1] + a[i];
     }
     for (int i=1; i<=m; i++)  cin >> b[i];
-    vector<vector<array<LL, 2> > > dp(n+10, vector<array<LL, 2> > (m+10, {(LL)1e18, (LL)0}));
+    vector<vector<array<LL, 3> > > dp(n+10, vector<array<LL, 3> > (m+10, {(LL)1e18, (LL)0, (LL)0}));
     // for (int i=1; i<=m; i++)  dp[0][i] = {0, 1};
-    dp[0][0] = {0, 1};
+    dp[0][0] = {0, 1, 1};
     vector<priority_queue<LL, vector<LL>, greater<> > > pri(m+10, priority_queue<LL, vector<LL>, greater<> >());
     vector<map<LL, LL> > num(m+10, map<LL, LL>());
     vector<map<LL, LL> > num1(m+10, map<LL, LL>());
-    priority_queue<array<LL, 4>, vector<array<LL, 4> > , greater<> > del;
+    priority_queue<array<LL, 5>, vector<array<LL, 5> > , greater<> > del;
     for (int i=1; i<=n; i++) {
         if (b[1] < a[i]) {
             cout << -1 << '\n';
             return;
         }
         while (!del.empty() && del.top()[0] < i) {
-            array<LL, 4> to = del.top();  del.pop();
+            array<LL, 5> to = del.top();  del.pop();
             num[to[1]][to[2]] += mod - to[3];
             num[to[1]][to[2]] %= mod;
-            num1[to[1]][to[2]] += mod1 - to[3];
+            num1[to[1]][to[2]] += mod1 - to[4];
             num1[to[1]][to[2]] %= mod1;
         }
         for (int j=1; j<=m; j++) {
             while (!pri[j].empty() && num[j][pri[j].top()] == 0 && num1[j][pri[j].top()] == 0) {
                 pri[j].pop();
             }
-            if (!pri[j].empty()) dp[i-1][j] = fun(dp[i-1][j], {pri[j].top(), num[j][pri[j].top()]});
+            if (!pri[j].empty()) dp[i-1][j] = fun(dp[i-1][j], {pri[j].top(), num[j][pri[j].top()], num1[j][pri[j].top()]});
             dp[i-1][j] = fun(dp[i-1][j], dp[i-1][j-1]);
         }
-        if (i == n + 1) break;
+        // if (i == n + 1) break;
         int l = 1, r = m;
         while (l < r) {
             int mid = ((l + r + 1) >> 1);
@@ -68,25 +68,25 @@ void work() {
             }
             pri[j].push(dp[i-1][j][0] + m - j);
             num[j][dp[i-1][j][0] + m - j] = (num[j][dp[i-1][j][0] + m - j] + dp[i-1][j][1]) % mod;
-            num1[j][dp[i-1][j][0] + m - j] = (num1[j][dp[i-1][j][0] + m - j] + dp[i-1][j][1]) % mod1;
-            del.push({r + 1, j, dp[i-1][j][0] + m - j, dp[i-1][j][1]});
+            num1[j][dp[i-1][j][0] + m - j] = (num1[j][dp[i-1][j][0] + m - j] + dp[i-1][j][2]) % mod1;
+            del.push({r + 1, j, dp[i-1][j][0] + m - j, dp[i-1][j][1], dp[i-1][j][2]});
         }
     }
     while (!del.empty() && del.top()[0] <= n) {
-        array<LL, 4> to = del.top();  del.pop();
+        array<LL, 5> to = del.top();  del.pop();
         num[to[1]][to[2]] += mod - to[3];
         num[to[1]][to[2]] %= mod;
-        num1[to[1]][to[2]] += mod1 - to[3];
+        num1[to[1]][to[2]] += mod1 - to[4];
         num1[to[1]][to[2]] %= mod1;
     }
     for (int j=1; j<=m; j++) {
         while (!pri[j].empty() && num[j][pri[j].top()] == 0 && num1[j][pri[j].top()] == 0) {
             pri[j].pop();
         }
-        if (!pri[j].empty()) dp[n][j] = fun(dp[n][j], {pri[j].top(), num[j][pri[j].top()]});
+        if (!pri[j].empty()) dp[n][j] = fun(dp[n][j], {pri[j].top(), num[j][pri[j].top()], num1[j][pri[j].top()]});
         // dp[i-1][j] = fun(dp[i-1][j], dp[i-1][j-1]);
     }
-    array<LL, 2> ans = {(LL)1e18, (LL)0};
+    array<LL, 3> ans = {(LL)1e18, (LL)0};
     for (int i=1; i<=m; i++) {
         // cout << dp[n][i][0] << ' ' << dp[n][i][1] << '\n';
         ans = fun(ans, dp[n][i]);
