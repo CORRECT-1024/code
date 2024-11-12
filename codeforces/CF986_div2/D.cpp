@@ -1,4 +1,3 @@
-// 题目要求读漏了，直接改的话，边是n方
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -7,33 +6,27 @@ typedef unsigned long long ULL;
 void work() {
     int n;
     cin >> n;
-    vector<vector<array<int, 2> > > bian(n+10, vector<array<int, 2> >());
+    vector<vector<int> > a(5, vector<int>(n+10, 0));
     for (int i=1; i<=3; i++) {
-        vector<int> b(n+10, 0), c(n+10, 0);
-        for (int i=1; i<=n; i++) {
-            cin >> b[i];
-            c[b[i]] = i;
-        }
-        for (int j=n; j>1; j--) {
-            bian[c[j]].push_back({c[j - 1], i});
-            // cout << i << ' ' << c[j] << "->" << c[j-1] << '\n';
+        for (int j=1; j<=n; j++) {
+            cin >> a[i][j];
         }
     }
-    vector<array<int, 2> > f(n+10, {-1, -1});
-    f[1] = {0, 0};
-    queue<int> qu;
-    qu.push(1);
-    while (!qu.empty()) {
-        int x = qu.front();  qu.pop();
-        for (auto  &[to, id] : bian[x]) {
-            if (f[to][0] != -1)  continue;
-            qu.push(to);
-            f[to] = {id, x};
+    vector<int> bo(n+10, 0);
+    bo[1] = 1;
+    // vector<int> id(5, 1);
+    vector<array<int, 2> > f(n+10, {0, 0}), ma(5, {0, 0});
+    for (int i=1; i<=n; i++) {
+        for (int j=1; j<=3; j++) {
+            if (bo[i] )  ma[j] = max(ma[j], {a[j][i], i});
+            if (! bo[i + 1] && ma[j][0] > a[j][i + 1]) {
+                f[i + 1] = {j, ma[j][1]};
+                bo[i + 1] = 1;
+            }
         }
     }
-    if (f[n][0] == -1) {
-        cout << "NO\n";
-        return;
+    if (! bo[n] ) {
+        cout << "NO\n";   return;
     }
     vector<array<int, 2> > ans;
     int x = n;
@@ -41,16 +34,13 @@ void work() {
         ans.push_back({f[x][0], x});
         x = f[x][1];
     }
+    cout << "YES\n";
     cout << ans.size() << '\n';
     for (int i=ans.size()-1; i>=0; i--) {
-        char c = ' ';
-        if (ans[i][0] == 1) {
-            c = 'q';
-        } else if (ans[i][0] == 2) {
-            c = 'k';
-        } else {
-            c = 'j';
-        }
+        char c = ' ' ;
+        if (ans[i][0] == 1) c = 'q';
+        else if (ans[i][0] == 2) c = 'k';
+        else c = 'j';
         cout << c << ' ' << ans[i][1] << '\n';
     }
 }
