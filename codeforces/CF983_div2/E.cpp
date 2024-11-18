@@ -1,4 +1,5 @@
-// n为奇数时, 结论有错
+// 从11点到12点半，就写了这一道题
+// 好在没看题解，自己想的。虽然感觉复杂了一点，好歹一发过了
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -7,59 +8,69 @@ typedef unsigned long long ULL;
 void work() {
     int n;
     cin >> n;
-    vector<int> a(n+10, 0), d2(n+10, 0);
+    vector<LL> a(n+10, 0);
     for (int i=1; i<=n; i++) {
         cin >> a[i];
     }
-    if (n == 1) {
-        cout << 0 << '\n';
-        return;
-    }
+    vector<LL> jian(n+10, 0), d(n+10, 0);
     for (int i=1; i<=n; i++) {
-        d2[i] = a[i] - a[(i + n - 2 - 1) % n + 1];
-        cout << d2[i] << ' ';
+        d[i] = a[i] - a[(i + n - 2) % n + 1];
     }
-    bool bo = true;
-    for (int i=1; i<=n; i++) {
-        if (d2[i] & 1) {
-            cout << -1 << '\n';
-            return;
+    vector<LL> fd(n+10, 0);
+    for (int i=1; i<=(n+1)/2; i++) {
+        fd[i] = d[2*i-1];
+        // cout << 2 * i - 1 << ' ';
+    }
+    for (int i=0; i<n/2; i++) {
+        fd[(n+1)/2+i+1] = d[2 * (i + 1)];
+        // cout << 2 * (i + 1) << ' ';
+    }
+    // cout << '\n';
+    vector<LL> hsum(n+10, 0);
+    LL ma = 0, id = -1;
+    for (int i=n; i>=1; i--) {
+        hsum[i] = hsum[i+1] + fd[i];
+        if (hsum[i] >= ma) {
+            ma = hsum[i];  id = i;
         }
     }
-    vector<int> ans(n+10, 0);
-    LL sum1 = 0;
-    for (int i=1; i<=n; i+=2) {
-        sum1 += d2[i];
-        int fd = d2[i] / 2;
-        ans[i] = fd;
-        d2[i] = 0;  d2[(i + 2 - 1) % n + 1] -= 2 * fd;
+    for (int j=0; j<n; j++) {
+        int fid = (id + j + n - 1) % n + 1;
+        jian[fid] = fd[fid];
+        fd[(fid + n) % n + 1] += fd[fid]; 
+        fd[fid] = 0;
     }
-    if (sum1 != 0) {
-        cout << -1 << '\n';
-        return;
-    }
-    sum1 = 0;
-    for (int i=2; i<=n; i+=2) {
-        sum1 += d2[i];
-        int fd = d2[i] / 2;
-        ans[i] = fd;
-        d2[i] = 0;  d2[(i + 2 - 1) % n + 1] -= 2 * fd;
-    }
-    if (sum1 != 0) {
-        cout << -1 << '\n';
-        return;
-    }
-    a[1] += 2 * ans[1] + ans[n] + ans[2];
-    a[2] += 2 * ans[2] + ans[1] + ans[2 % n + 1];
-    if (a[1] > a[2]) {
-        LL fd = a[1] - a[2];
-        for (int i=2; i<=n; i+=2) {
-            ans[i] += fd;
+    vector<LL> fans(n+10, 0);
+    for (int i=1; i<=n; i++) {
+        if (i & 1) {
+            fans[i] = jian[i / 2 + 1];
+        } else {
+            fans[i] = jian[n / 2 + 1 + i / 2];
         }
-    } else if (a[1] < a[2]) {
-        LL fd = a[2] - a[1];
-        for (int i=1; i<=n; i+=2) {
-            ans[i] += fd;
+    }
+    vector<LL> qj(n+10, 0), qo(n+10, 0), hj(n+10, 0), ho(n+10, 0);
+    for (int i=1; i<=n; i++) {
+        if (i & 1) {
+            qo[i-1] += fans[i];  hj[i+2] += fans[i];
+        } else {
+            qj[i-1] += fans[i];  ho[i+2] += fans[i];
+        }
+    }
+    vector<LL> ans(n+10, 0);
+    LL sumj = 0, sumo = 0;
+    for (int i=1; i<=n; i++) {
+        if (i & 1) {
+            sumj += hj[i];  ans[i] += sumj;
+        } else {
+            sumo += ho[i];  ans[i] += sumo;
+        }
+    }
+    sumj = 0;  sumo = 0;
+    for (int i=n; i>=1; i--) {
+        if (i & 1) {
+            sumj += qj[i];  ans[i] += sumj;
+        } else {
+            sumo += qo[i];  ans[i] += sumo;
         }
     }
     for (int i=1; i<=n; i++) {
@@ -76,7 +87,7 @@ int main()
     ios::sync_with_stdio(false); cin.tie(0); 
     int T=1;
     cin >> T;
-    while(T--){
+    while(T--) {
         work();
     }
 
