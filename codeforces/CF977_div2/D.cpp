@@ -47,10 +47,13 @@ void work() {
             // cout << fdp[i%2][j] << ' ' << sum[i][j] << '\n';
             fdp[i%2][j] += sum[i][j];
         }
-        for (int j=1; j<m; j++)  cout << dp[i%2][j] << ' ';
-        cout << '\n';
-        for (int j=2; j<=m; j++)  cout << fdp[i%2][j] << ' ';
-        cout << "\n\n";
+        if (i == 1) {
+            dp[i%2][m] = a[i][m];   fdp[i%2][1] = a[i][1];
+        }
+        // for (int j=1; j<=m; j++)  cout << dp[i%2][j] << ' ';
+        // cout << '\n';
+        // for (int j=1; j<=m; j++)  cout << fdp[i%2][j] << ' ';
+        // cout << "\n\n";
     }
     LL ans = (LL)-1e15;
     for (int i=1; i<m; i++) {
