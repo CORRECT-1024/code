@@ -1,8 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-typedef long long LL;
-typedef unsigned long long ULL;
-
 int manachar(string s) {
     int len = s.size();
     vector<int> ans1(len+10, 0), ans2(len+10, 0);
@@ -30,33 +25,10 @@ int manachar(string s) {
             r2 = i + k;  id2 = i;
         }
     }
-    // LL sum = 0;
-    int ma = -1;
+    LL sum = 0;
     for (int i=0; i<len; i++) {
-        // sum += ans1[i];
-        // sum += ans2[i];
-        ma = max({ma, ans1[i] * 2 - 1, ans2[i] * 2});
-        // cout << ans1[i] << ' ' << ans2[i] << '\n';
+        sum += ans1[i];
+        sum += ans2[i];
     }
     return ma;
-}
-void work() {
-    string s;
-    cin >> s;
-    cout << manachar(s) << '\n';
-}
-int main()
-{
-    #ifdef QHK
-    freopen("qi.in","r",stdin);
-    freopen("qi.out","w",stdout);
-    #endif
-    ios::sync_with_stdio(false); cin.tie(0); 
-    int T=1;
-    // cin >> T;
-    while(T--) {
-        work();
-    }
-
-   return 0;
 }
