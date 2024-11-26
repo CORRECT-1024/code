@@ -1,18 +1,10 @@
 // sb 改代码20秒，in queue10分钟
+// 得注意细节，这题要是赛时，可能就被hack了
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
 typedef unsigned long long ULL;
 
-// LL power(LL a, LL n) {
-//     LL ans = 1;
-//     while (n ) {
-//         if (n & 1) ans = ans * a;
-//         a = a * a;
-//         n >>= 1;
-//     }
-//     return ans;
-// }
 int dfs(int x, vector<vector<int> > &bian) {
     map<int, int> mp;
     int ans = 0, p = 0;
@@ -23,16 +15,13 @@ int dfs(int x, vector<vector<int> > &bian) {
     }
     int laval = 0, lanum = 0;
     for (auto &[val, num] : mp) {
+        // TLE
+        // while (lanum && laval < val) {
+        //     laval ++;  lanum = (lanum + 1) / 2;
+        // }
         while (lanum && laval < val && lanum > 1) {
             laval ++;  lanum = (lanum + 1) / 2;
         }
-        // if (lanum ) {
-        //     LL d = 1e9;
-        //     if (val - laval <= 20) {
-        //         LL p = power(2, val - laval);
-        //         lanum = (lanum + p - 1) / p;
-        //     }
-        // }
         laval = val;  lanum = num + lanum;
     }
     while (lanum > 1) {
