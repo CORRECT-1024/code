@@ -34,7 +34,10 @@ void tarjanfun(int n) {
 }
 
 void work() {
+    LL n, m, k;
+    cin >> n >> m >> k;
     
+
 }
 int main()
 {
