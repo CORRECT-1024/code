@@ -22,34 +22,19 @@ void tarjan(int x, int dfncnt, vector<vector<int> > &bian, vector<int> &dfn, vec
         while (inst[x] ) {
             scc[scc.size()-1].push_back(st.top());
             inst[st.top()] = 0;
-            sz[st.top()] = scc.size() - 1;
             st.pop();
         }
     }
 }
-void tarjanfun(int n, vector<vector<int> > &bian) {
+void tarjanfun(int n) {
     sz = vector<int> (n+10, 0);
     vector<int> dfn(n+10, 0), low(dfn), inst(dfn);
     stack<int> st;
     tarjan(1, 0, bian, dfn, low, st, inst);
 }
+
 void work() {
-    int n, m;
-    cin >> n >> m;
-    vector<vector<int> > bian(n+10, vector<int>());
-    for (int i=1; i<=m; i++) {
-        int u, v;
-        cin >> u >> v;
-        bian[u].push_back(v);
-    }
-    tarjanfun(n, bian);
-    for (int i=0; i<scc.size(); i++) {
-        cout << i << '\n';
-        for (auto &x : scc[i]) {
-            cout << x << ' ';
-        }
-        cout << '\n';
-    }
+    
 }
 int main()
 {
