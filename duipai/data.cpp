@@ -5,18 +5,18 @@ typedef unsigned long long ULL;
 
 void work() {
     srand(time(0));
-    int T = 1;
-    cout << T << '\n';
-    int n = rand() % 10 + 3;
-    cout << n << '\n';
-    for (int i=1; i<=n; i++) {
-        int x = rand() % (2*n) + 1;
-        cout << x << ' ';
+    int n = 7;
+    int m = n + rand() % n;
+    int q = n;
+    cout << n << ' ' << m << ' ' << q << '\n';
+    for (int i=1; i<=m; i++) {
+        int u, w;
+        u = rand() % n;
+        w = (rand() - rand()) * (rand() - rand()) % n;
+        cout << u << ' ' << w << '\n';
     }
-    cout << '\n';
-    for (int i=1; i<=n; i++) {
-        int x = rand() % (2*n) + 1;
-        cout << x << ' ';
+    for (int i=1; i<=q; i++) {
+        cout << i - 1 << '\n';
     }
 }
 int main()

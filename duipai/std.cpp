@@ -2,120 +2,144 @@
 using namespace std;
 typedef long long LL;
 typedef unsigned long long ULL;
+const LL nonum = (LL)1e16;
+
+vector<int> sz;
+vector<vector<int> > scc;
+
+void tarjan(int x, int dfncnt, vector<vector<array<LL, 2> > > &bian, vector<int> &dfn, vector<int> &low, stack<int> &st, vector<int> &inst) {
+    dfncnt ++;  dfn[x] = dfncnt;  low[x] = dfncnt;
+    st.push(x);  inst[x] = 1;
+    for (auto &[to, val] : bian[x]) {
+        if (!dfn[to] ) {
+            tarjan(to, dfncnt, bian, dfn, low, st, inst);
+            low[x] = min(low[x], low[to]);
+        } else if (inst[to] ) {
+            low[x] = min(low[x], low[to]);
+        }
+    }
+    if (dfn[x] == low[x] ) {
+        scc.push_back(vector<int>());
+        while (inst[x] ) {
+            scc[scc.size()-1].push_back(st.top());
+            inst[st.top()] = 0;
+            st.pop();
+        }
+    }
+}
+void tarjanfun(int n, vector<vector<array<LL, 2> > > &bian) {
+    sz = vector<int> (n+10, 0);
+    vector<int> dfn(n+10, 0), low(dfn), inst(dfn);
+    stack<int> st;
+    for (int i=0; i<n; i++) {
+        if (dfn[i] )  continue;
+        tarjan(i, 0, bian, dfn, low, st, inst);
+    }
+}
 
 void work() {
-    int n, ans, ansnum;
-    cin >> n;
-    vector<int> a(n+10, 0), b(n+10, 0);
-    for (int i=1; i<=n; i++) {
-        cin >> a[i];
-    }
-    for (int i=1; i<=n; i++) {
-        cin >> b[i];
-    }
-    //a b的前缀异或和
-    vector<int> suma(n+10, 0), sumb(n+10, 0);
-    //a b的不同前缀异或和的值和位置
-    vector<array<int, 2> > pa{{0, 0}}, pb{{0, 0}};
-    for (int i=1; i<=n; i++) {
-        suma[i] = gcd(suma[i-1], a[i]);
-        sumb[i] = gcd(sumb[i-1], b[i]);
-    }
-    for (int i=1; i<=n; i++) {
-        if (suma[i] != suma[i+1]) {
-            pa.push_back({suma[i], i});
-            // cout << suma[i] << ' ' << i << '\n';
+    LL n, m, q;
+    cin >> n >> m >> q;
+    vector<vector<array<LL, 2> > > bian(n+10, vector<array<LL, 2> > ());
+    vector<vector<int> > fubian(n+10, vector<int> ());
+    vector<int> ans(n+10, 0);
+    for (int i=1; i<=m; i++) {
+        int u, v, w;  cin >> u >> w;
+        u = (u % n + n) % n;
+        v = (w % n + n) % n;
+        v = (u + v) % n;
+        // cout << u << ' ' << v << ' ' << w << '\n';
+        if (u == v) {
+            if (w == 0)  continue;
+            ans[u] = 1;  continue;
         }
-        if (sumb[i] != sumb[i+1]) {
-            pb.push_back({sumb[i], i});
-        }
+        bian[u].push_back({v, w});
+        fubian[v].push_back(u);
     }
-    // cout << '\n';
-    pa.push_back({suma[n], n});
-    pb.push_back({sumb[n], n});
-    ans = suma[n] + sumb[n];
-    ansnum = 0;
-    //a b的后缀异或和
-    vector<int> fsuma(n+10, 0), fsumb(n+10, 0);
-    for (int i=n; i>=1; i--) {
-        fsuma[i] = gcd(fsuma[i+1], a[i]);
-        fsumb[i] = gcd(fsumb[i+1], b[i]);
-    }
-    //gcd(l, r) != gcd(l+1, r)时，存{gcd(l, r), l}
-    //随r一直维护
-    vector<array<int, 2> > fa, fb;
-    fa.push_back({0, 1});
-    fb.push_back({0, 1});
-    for (int r=1; r<=n; r++) {
-        //维护fa, fb的过程和jls不一样，如果wa了再来研究
-        //先维护fa, fb;
-        int k = 0;
-        for (int i=0; i<fa.size(); i++) {
-            fa[i][0] = gcd(fa[i][0], a[r]);
-            int t = fa[i][0];
-            if (k && fa[i][0] == fa[k-1][0]) {
-                //只改fa[k-1][1] (l)
-                fa[k-1][1] = fa[i][1];
-            } else {
-                fa[k] = fa[i];
-                k ++;
-            }
-        }
-        //方便后面直接push_back
-        fa.resize(k);
-        k = 0;
-        for (int i=0; i<fb.size(); i++) {
-            fb[i][0] = gcd(fb[i][0], b[r]);
-            if (k && fb[i][0] == fb[k-1][0]) {
-                fb[k-1][1] = fb[i][1];
-            } else {
-                fb[k] = fb[i];
-                k ++;
-            }
-        }
-        fb.resize(k);
-        fa.push_back({0, r});
-        fb.push_back({0, r});
-        //l：pa，pb，fa，fb
-        int l = 0, last = -1;
-        //左：suma[l]，中：fa[faid]，右：fsuma[r+1];
-        int paid = 0, pbid = 0, faid = 0, fbid = 0;
-        while (true) {
-            l = min({pa[paid][1], pb[pbid][1], fa[faid][1], fb[fbid][1]});
-            if (l >= r) break;
-            if (l != last) {
-                int fans = 0;
-                fans += gcd(suma[l], gcd(fb[fbid][0], fsuma[r+1]));
-                fans += gcd(sumb[l], gcd(fa[faid][0], fsumb[r+1]));
-                // cout << l << ' ' << r << ' ' << fans << '\n';
-                // cout << suma[l] << ' ' << fb[fbid][0] << ' ' << fsuma[r+1] << '\n';
-                // cout << sumb[l] << ' ' << fa[faid][0] << ' ' << fsumb[r+1] << '\n';
-                // cout << '\n';
-                if (fans > ans) {
-                    // cout << l << ' ' << r << ' ' << fans << '\n';
-                    ans = fans;
-                    ansnum = l - last;
-                } else if (fans == ans) {
-                    // cout << l << ' ' << r << ' ' << fans << '\n';
-                    ansnum += l - last;
+    for (int i=0; i<n; i++) {
+        if (ans[i] ) {
+            queue<int> ansqu;  ansqu.push(i);
+            ans[i] = 1;
+            while (!ansqu.empty() ) {
+                int x = ansqu.front();  ansqu.pop();
+                for (auto &u : fubian[x]) {
+                    if (ans[u] == 0)  ansqu.push(u);
+                    ans[u] = 1;
                 }
             }
-            while (l >= pa[paid][1]) {
-                paid ++;
-            }
-            while (l >= pb[pbid][1]) {
-                pbid ++;
-            }
-            while (l >= fa[faid][1]) {
-                faid ++;
-            }
-            while (l >= fb[fbid][1]) {
-                fbid ++;
-            }
-            last = l;
         }
     }
-    cout << ans << ' ' << ansnum << '\n';
+    tarjanfun(n, bian);
+    vector<int> mp(n+10, 0);
+    vector<int> mpid(n+10, 0);
+    for (int sccid = 0; sccid < scc.size(); sccid ++) {
+        auto &p = scc[sccid];
+        // for (auto &x : p) {
+        //     cout << x << ' ';
+        // }
+        // cout << '\n';
+        if (p.size() == 1 || ans[p[0]] )  continue;
+        // map<int, int> mp;
+        int siz = 0;
+        for (auto &x : p) {
+            siz ++;  mp[x] = siz;
+            mpid[x] = sccid + 1;
+        }
+        vector<vector<array<LL, 2> > > fbian(siz + 10, vector<array<LL, 2> > ());
+        vector<int> rudu(siz+10, 0);
+        for (auto &x : p) {
+            int fx = mp[x];
+            for (auto &[to, val] : bian[x]) {
+                // if (mp.find(to) == mp.end() )  continue;
+                if (mpid[to] != sccid + 1)  continue;
+                int fto = mp[to];
+                fbian[fx].push_back({fto, val});
+                rudu[fto] ++;
+            }
+        }
+        vector<LL> num(siz+10, nonum);
+        num[1] = 0;
+        queue<int> qu;  qu.push(1);
+        bool bo = false;
+        while (!qu.empty()) {
+            int x = qu.front();  qu.pop();
+            for (auto &[to, val] : fbian[x]) {
+                if (num[to] != nonum && num[x] + val != num[to]) {
+                    bo = true;  break;
+                }
+                num[to] = num[x] + val;
+                rudu[to] --;
+                if (rudu[to] == 0) {
+                    qu.push(to);
+                }
+            }
+            if (bo )  break;
+        }
+        if (bo ) {
+            queue<int> ansqu;  ansqu.push(p[0]);
+            ans[p[0]] = 1;
+            while (!ansqu.empty() ) {
+                int x = ansqu.front();  ansqu.pop();
+                for (auto &u : fubian[x]) {
+                    if (ans[u] == 0)  ansqu.push(u);
+                    ans[u] = 1;
+                }
+            }
+        }
+    }
+    // for (int i=0; i<n; i++) {
+    //     cout << i << ": " << ans[i] << '\n';
+    // }
+    // return;
+    while (q --) {
+        int x;  cin >> x;
+        x = (x % n + n) % n;
+        if (ans[x] ) {
+            cout << "Yes\n";
+        } else {
+            cout << "No\n";
+        }
+    }
 }
 int main()
 {
@@ -125,13 +149,13 @@ int main()
     #endif
     ios::sync_with_stdio(false); cin.tie(0); 
     int T=1;
-    // scanf("%d",&T);
-    cin >> T;
-    while(T--){
+    // cin >> T;
+    while(T--) {
         work();
     }
 
    return 0;
 }
+
 
 
