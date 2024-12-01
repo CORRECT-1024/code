@@ -12,7 +12,7 @@ void work() {
             cin >> a[i][j];
             sum[i][j] = sum[i][j-1] + a[i][j];
         }
-        for (int j=n; j>=1; j--) {
+        for (int j=m; j>=1; j--) {
             fsum[i][j] = fsum[i][j+1] + a[i][j];
         }
     }
@@ -22,13 +22,15 @@ void work() {
         fdp[0][i+1] = 0;
     }
     for (int i=1; i<=n; i++) {
+        dp[i % 2] = vector<LL> (m+10, (LL)-1e15);
+        fdp[i % 2] = vector<LL> (m+10, (LL)-1e15);
         vector<LL> masum(m+10, (LL)-1e15);
         for (int j=m; j>=1; j--) {
             // sum > j - 1
             masum[j] = max(masum[j+1], sum[i][j]);
         }
         for (int j=m-1; j>=1; j--) {
-            dp[i%2][j] = max(dp[i%2][j+1], fdp[(i+1)%2][j] + masum[j+1]);
+            dp[i%2][j] = max({dp[i%2][j+1], fdp[(i+1)%2][j] + masum[j+1], dp[(i+1)%2][j+1] + masum[j+1]});
             // cout << fdp[(i+1)%2][j] << ' ' << masum[j+1] << '\n';
         }
         for (int j=m-1; j>=1; j--) {
@@ -40,7 +42,7 @@ void work() {
             // misum[j] = min(misum[j-1], fsum[i][j]);
         }
         for (int j=2; j<=m; j++) {
-            fdp[i%2][j] = max(fdp[i%2][j-1], dp[(i+1)%2][j] - misum[j-2]);
+            fdp[i%2][j] = max({fdp[i%2][j-1], dp[(i+1)%2][j] - misum[j-2], fdp[(i+1)%2][j-1] - misum[j-2]});
             // cout << dp[(i+1)%2][j] << ' ' << misum[j-1] << '\n';
         }
         for (int j=2; j<=m; j++) {
@@ -48,6 +50,8 @@ void work() {
             fdp[i%2][j] += sum[i][j];
         }
         if (i == 1) {
+            for (int j=1; j<m; j++) dp[i%2][j] = max(dp[i%2][j], a[i][j]);
+            for (int j=2; j<=m; j++) fdp[i%2][j] = max(fdp[i%2][j], a[i][j]);
             dp[i%2][m] = a[i][m];   fdp[i%2][1] = a[i][1];
         }
         // for (int j=1; j<=m; j++)  cout << dp[i%2][j] << ' ';
