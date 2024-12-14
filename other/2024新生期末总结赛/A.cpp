@@ -4,8 +4,21 @@ typedef long long LL;
 typedef unsigned long long ULL;
 
 void work() {
-    for (int i=0; i<50; i++) {
-        cout << "./Project1 ./Instances/rand-2-30-15-306-233-" << i << "_ext-merged.xml\n";
+    int n;
+    cin >> n;
+    vector<int> ans(n*n+10, 0);
+    int x, id = 1, p = 0;
+    while (cin >> x ) {
+        for (int i=1; i<=x; i++) {
+            ans[id] = p;  id ++;
+        }
+        p ^= 1;
+    }
+    for (int i=1; i<=n; i++) {
+        for (int j=1; j<=n; j++) {
+            cout << ans[(i - 1) * n + j];
+        }
+        cout << '\n';
     }
 }
 int main()

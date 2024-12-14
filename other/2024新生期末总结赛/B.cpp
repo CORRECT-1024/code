@@ -4,8 +4,14 @@ typedef long long LL;
 typedef unsigned long long ULL;
 
 void work() {
-    for (int i=0; i<50; i++) {
-        cout << "./Project1 ./Instances/rand-2-30-15-306-233-" << i << "_ext-merged.xml\n";
+    LL a1, b1, c1, a2, b2, c2;
+    cin >> a1 >> b1 >> c1 >> a2 >> b2 >> c2;
+    LL d1 = 2 * (a1 + b1) * c1 + a1 * b1;
+    LL d2 = 2 * (a2 + b2) * c2 + a2 * b2;
+    if (d1 >= d2) {
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
     }
 }
 int main()
