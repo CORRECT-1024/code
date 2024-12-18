@@ -4,7 +4,17 @@ typedef long long LL;
 typedef unsigned long long ULL;
 
 void work() {
-    
+    string s;
+    cin >> s;
+    int ans = 0;
+    map<char, int> mp;
+    for (auto &c : s) {
+        if (mp[c] )  continue;
+        ans ++;
+        mp[c] = 1;
+    }
+    ans = s.size() - ans;
+    cout << ans << '\n';
 }
 int main()
 {
