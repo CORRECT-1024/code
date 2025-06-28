@@ -4,7 +4,13 @@ typedef long long LL;
 typedef unsigned long long ULL;
 
 void work() {
-    
+    LL n;
+    cin >> n;
+    if (n & 1) {
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
+    }
 }
 int main()
 {

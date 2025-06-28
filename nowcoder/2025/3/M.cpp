@@ -4,7 +4,14 @@ typedef long long LL;
 typedef unsigned long long ULL;
 
 void work() {
-    
+    string s;
+    cin >> s;
+    sort(s.begin(), s.end());
+    if (s == "cdenoorw") {
+        cout << "happy new year\n";
+    } else {
+        cout << "I AK IOI\n";
+    }
 }
 int main()
 {
